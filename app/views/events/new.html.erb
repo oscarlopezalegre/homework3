@@ -1,0 +1,76 @@
+<br>
+<br>
+<br>
+<%= javascript_include_tag :defaults, "nested_form" %>
+
+
+<div class="row">
+	<div class= "col-sm-2 col-md2- col-md-offset-5">
+	Create a new Event
+	</div>
+
+</div>
+
+<div class="col-sm-4 col-md-4 col-md-offset-4">
+  <%= nested_form_for(@editing_event) do |f| %>
+    <div class="form-group">
+      <%= f.label "Name: " %>
+      <%= f.text_field 'name', class: 'form-control', placeholder: 'Your event name'%>
+    </div>
+    <div class="form-group">
+      <%= f.label "Starts: " %>
+      <%= f.datetime_select 'starts_at', class: 'form-control', placeholder: 'Your start date'%>
+    </div>
+    <div class="form-group">
+      <%= f.hidden_field 'user_id', :value => session[:userid] %>
+    </div>
+     <div class="form-group">
+      <%= f.label "Ends: " %>
+      <%= f.datetime_select 'ends_at', class: 'form-control', placeholder: 'Your end date'%>
+    </div>
+     <div class="form-group">
+      <%= f.text_field 'hero_image_url', class: 'form-control', placeholder: 'hero image' %>
+    </div>
+
+     <div class="form-group">
+      <%= f.text_area 'extended_html_description', class: 'form-control', placeholder: 'HTML description' %>
+    </div>
+     <div class="form-group">
+		<%=	f.collection_select :category_id , Category.all.collect,  :id, :name %>				
+    </div>
+
+    Ticket Types
+	<%= f.fields_for :ticket_types do |ticket_type| %>
+	  	<div class="field">
+	  		<%= ticket_type.label :name %> <%= ticket_type.text_field :name %>
+	  		<%= ticket_type.label :price %> <%= ticket_type.text_field :price %>
+	  		<%= ticket_type.label :max_quantity %> <%= ticket_type.text_field :max_quantity %>
+	  		<%= ticket_type.link_to_remove "Remove" %>
+	  	</div>
+	<% end %>
+
+	<%= f.link_to_add "Add", :ticket_types %>
+	<br>
+	Venue:
+	<%= f.fields_for :venue do |v| %>
+	  	<div class="field">
+	  		<%= v.label :name %> <%= v.text_field :name %>
+			<%= v.label :region %> 
+			<%=	v.collection_select :region_id, Region.all.collect,  :id, :name %>				
+	  	</div>
+	<% end %>
+
+	<br>
+
+    <div class="form-group col-sm-4 col-md-4 col-md-offset-9">
+        <%= f.submit 'Save', class: 'btn btn-block btn-info' %>
+    </div>
+  <% end %>
+</div>  
+
+
+
+
+
+
+

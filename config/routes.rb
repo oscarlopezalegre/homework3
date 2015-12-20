@@ -1,9 +1,26 @@
 Rails.application.routes.draw do
+  get 'purchase/new'
+
+  get 'purchase/create'
+
+  get 'purchase/show'
+
   root 'events#index'
 
   resources :events do
     resources :tickets
   end
+
+  resources :purchase
+  resources :users
+
+  post 'login' => "sessions#create"
+  get 'logout' => "sessions#destroy"
+
+  get 'myevents' => "events#show_my_events"
+
+  get 'publish' =>   "events#publish"
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

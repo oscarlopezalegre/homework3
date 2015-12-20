@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151215104433) do
+ActiveRecord::Schema.define(version: 20151219155539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,16 +26,27 @@ ActiveRecord::Schema.define(version: 20151215104433) do
     t.datetime "starts_at"
     t.datetime "ends_at"
     t.integer  "venue_id"
+    t.integer  "user_id"
     t.string   "hero_image_url"
     t.text     "extended_html_description"
     t.integer  "category_id"
+    t.boolean  "published",                 default: false
     t.string   "name"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   add_index "events", ["category_id"], name: "index_events_on_category_id", using: :btree
   add_index "events", ["venue_id"], name: "index_events_on_venue_id", using: :btree
+
+  create_table "purchases", force: :cascade do |t|
+    t.integer  "total_price"
+    t.integer  "quantity"
+    t.integer  "event_id"
+    t.integer  "ticket_type_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "regions", force: :cascade do |t|
     t.string   "name"
@@ -53,6 +64,14 @@ ActiveRecord::Schema.define(version: 20151215104433) do
   end
 
   add_index "ticket_types", ["event_id"], name: "index_ticket_types_on_event_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "password_digest"
+    t.string   "email"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "venues", force: :cascade do |t|
     t.string   "name"

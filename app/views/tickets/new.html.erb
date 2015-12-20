@@ -1,9 +1,32 @@
-<div class="container tickets-buy">
-  <h2> <%= @event.name %> </h2>
+
+<br>
+<br>
+<br>
+<div class="col-sm-10 col-md-10 col-md-offset-1">
+<h1>Select your tickets</h1>
+<form action=<%= new_purchase_path%> method="get">
+  <%= hidden_field_tag 'eventid', @event.id%>
   <ul>
     <% @event.ticket_types.each do |type| %>
-      <li> <%= type.name %> </li>
-    <% end %> 
+      <li> <%= type.name %>  (available = <%= (type.max_quantity - Purchase.sold(@event.id,type.id) ) %> )
+
+      <select name=<%= "type_id_"+type.id.to_s%>>
+      <% 
+      	if type.max_quantity != nil and type.max_quantity < 11
+      		@max_quantity= type.max_quantity
+      	else
+      		@max_quantity = 11
+      	end
+		@max_quantity.times do |i| %>
+      	<option> <%= i %> </option>
+	  	</li>
+	  <% end %> 
+    </select>
+	<% end %> 
+
   </ul>
-</div>  
+  <input type="submit" class="btn  btn-info" value="Submit"></input>
+</form >
+</div>
+
 

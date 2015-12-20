@@ -1,0 +1,23 @@
+	<br>
+	<br>
+	<br>
+	<div class="col-sm-10 col-md-10 col-md-offset-1">
+	<h1>Purchase confirmation</h1>
+	<br>
+	<h3>Event:<%= @event.name %></h3>
+
+	<%= form_for :purchase, :url => purchase_index_path, :method => "post" do |t| %>
+	  <ul>
+	  	<%= hidden_field_tag 'eventid', @event.id%>
+
+	    <% @event.ticket_types.each do |type| %>
+		  	<%= hidden_field_tag "type_id_"+type.id.to_s, @event_types["type_id_"+type.id.to_s]%>
+
+	      <li> <%= type.name %> : <%= @event_types["type_id_"+type.id.to_s] %> x
+	      	   <%= type.price %> =
+	      	   <%= @event_types["type_id_"+type.id.to_s].to_i*type.price %> VND
+	      </li>
+		<% end %>
+	  </ul>
+	  <%= t.submit name="Confirm", :class => "btn  btn-info" %>
+	<% end %>

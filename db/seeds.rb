@@ -14,6 +14,10 @@ end
 # First event:
 # Việt Nam Thử Thách Chiến Thắng
 
+u = User.create({name: "admin",
+                  email: "admin@fake.com",
+                  password: "1234"})
+
 dalat = Venue.create({
   name: 'Da Lat City',
   full_address: 'Ngoc Phat Hotel 10 Hồ Tùng Mậu Phường 3, Thành phố Đà Lạt, Lâm Đồng, Thành Phố Đà Lạt, Lâm Đồng',
@@ -26,6 +30,7 @@ e = Event.create({
   ends_at: DateTime.parse('Sun, 13 Mar 2016 3:00 PM+0700'),
   venue: dalat,
   category: Category.find_by(name: 'Everything Else'),
+  user: u,
   hero_image_url: 'https://az810747.vo.msecnd.net/eventcover/2015/10/25/C6A1A5.jpg?w=1040&maxheight=400&mode=crop&anchor=topcenter',
   extended_html_description: <<-DESC
     <p style="text-align:center"><span style="font-size:20px">VIỆT NAM THỬ THÁCH CHIẾN THẮNG 2016</span></p>
@@ -54,6 +59,7 @@ e = Event.create({
   category: Category.find_by(name: 'Entertainment'),
   starts_at: DateTime.parse('Sat, 16 Jan 2016, 8:00 PM+0700'),
   ends_at: DateTime.parse('Sat, 16 Jan 2016, 10:30 PM+0700'),  
+  user: u,
   hero_image_url: 'https://az810747.vo.msecnd.net/eventcover/2015/12/11/C68636.jpg?w=1040&maxheight=400&mode=crop&anchor=topcenter',
   extended_html_description: <<-DESC
   <p style="text-align:justify"> </p>
@@ -136,6 +142,7 @@ e = Event.create({
   starts_at: DateTime.parse('Thu, 24 Dec 2015, 8:00 PM+0700'),
   ends_at: DateTime.parse('Thu, 24 Dec 2015, 11:00 PM+0700'),
   venue: gap,
+  user: u,
   category: Category.find_by(name: 'Entertainment'),
   hero_image_url:'https://az810747.vo.msecnd.net/eventcover/2015/12/12/78534E.jpg?w=1040&maxheight=400&mode=crop&anchor=topcenter',
   extended_html_description: <<-DESC
