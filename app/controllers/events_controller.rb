@@ -9,60 +9,73 @@ class EventsController < ApplicationController
   end
 
   def new
-    @editing_event = Event.new
-    @editing_event.build_venue()
+    if request_user_logged
+      @editing_event = Event.new
+      @editing_event.build_venue()
+    end
 
   end
 
   def create
-    @editing_event = Event.new(event_params)  
-    
-    if @editing_event.save
-      flash[:success] = "Message saved"
-      redirect_to myevents_path
-    else
-      @editing_event.build_venue()
-      flash[:warning] = "Error saving"
-      render 'new'
+    if request_user_logged
+
+      @editing_event = Event.new(event_params)  
+      
+      if @editing_event.save
+        flash[:success] = "Message saved"
+        redirect_to myevents_path
+      else
+        @editing_event.build_venue()
+        flash[:warning] = "Error saving"
+        render 'new'
+      end
     end
   end
 
   def show_my_events
-    @events = Event.search_my_events(session[:userid])
+    if request_user_logged
+      @events = Event.search_my_events(session[:userid])
+    end
   end
 
 
   def show
-    @event = Event.find(params[:id])
+      @event = Event.find(params[:id])
+    
   end
 
   def edit
-    @editing_event = Event.find(params[:id])
-    render 'new'
+    if request_user_logged
+      @editing_event = Event.find(params[:id])
+      render 'new'
+    end
   end
 
   def update
-    @editing_event = Event.find(params[:id])
-    @editing_event.update(event_params)
-    if @editing_event.save
-      flash[:success] = "Message saved"
-      redirect_to myevents_path
-    else
-      flash[:warning] = "Couldn't edit message"
-      redirect_to edit_event_path(params[:id])
+    if request_user_logged
+      @editing_event = Event.find(params[:id])
+      @editing_event.update(event_params)
+      if @editing_event.save
+        flash[:success] = "Message saved"
+        redirect_to myevents_path
+      else
+        flash[:warning] = "Couldn't edit message"
+        redirect_to edit_event_path(params[:id])
+      end
     end
-
   end
 
   def publish
-    @editing_event = Event.find(params[:id])
-    @editing_event.published=params[:publish]
-    if @editing_event.save
-      flash[:success] = "Message published"
-      redirect_to myevents_path
-    else
-      flash[:warning] = "Error publishing"
-      redirect_to myevents_path
+    if request_user_logged
+      @editing_event = Event.find(params[:id])
+      @editing_event.published=params[:publish]
+      if @editing_event.save
+        flash[:success] = "Message published"
+        redirect_to myevents_path
+      else
+        flash[:warning] = "Error publishing"
+        redirect_to myevents_path
+      end
     end
   end
   

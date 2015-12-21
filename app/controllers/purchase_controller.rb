@@ -1,40 +1,42 @@
 class PurchaseController < ApplicationController
   def new
-	@event = Event.find(params[:eventid])
-	@event_types = {}
-    @event.ticket_types.each do |type|
-    	key = "type_id_"+type.id.to_s
-    	@event_types[key] = params[key]
-    end
 
+    if request_user_logged
+      	@event = Event.find(params[:eventid])
+  	    @event_types = {}
+        @event.ticket_types.each do |type|
+      	key = "type_id_"+type.id.to_s
+      	@event_types[key] = params[key]
+      end
+    end
   end
 
   def create
-    @event = Event.find(params[:eventid])
-    
-    if event_in_past
-          flash[:warning] = "Purchase error"        
-      return
-    end
-    if check_quantity_error
-          flash[:warning] = "Purchase error"        
-      return 
-    end
-    @event.ticket_types.each do |type|
-      key = "type_id_"+type.id.to_s
-      quantity = params[key].to_i
-      if quantity>0
-        p = Purchase.new(:quantity => quantity, :event_id => @event.id, :total_price => quantity*type.price,:ticket_type_id => type.id )
-        if p.save
-          flash[:success] = "Purchase Success"        
-        # success
-        else
-          flash[:warning] = "Purchase error"        
-        end
+    if request_user_logged
+      @event = Event.find(params[:eventid])  
+      if event_in_past
+            flash[:warning] = "Purchase error"        
+        return
       end
+      if check_quantity_error
+            flash[:warning] = "Purchase error"        
+        return 
+      end
+      @event.ticket_types.each do |type|
+        key = "type_id_"+type.id.to_s
+        quantity = params[key].to_i
+        if quantity>0
+          p = Purchase.new(:quantity => quantity, :event_id => @event.id, :total_price => quantity*type.price,:ticket_type_id => type.id )
+          if p.save
+            flash[:success] = "Purchase Success"        
+          # success
+          else
+            flash[:warning] = "Purchase error"        
+          end
+        end
 
+      end
     end
-
   end
 
   def show

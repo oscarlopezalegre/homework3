@@ -23,9 +23,13 @@ class SessionsController < ApplicationController
   			redirect_to root_path
   		else
   			#authorization failed
+        flash[:warning] = "Wrong email/password combination"  
+        redirect_to root_path
   		end
   	else
   		#email not found
+      flash[:warning] = "Email doesn't exist"  
+      redirect_to root_path
 
   	end
   end

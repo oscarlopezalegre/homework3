@@ -26,7 +26,9 @@ class UsersController < ApplicationController
   end
 
   def show
-  	@user = User.find(params[:id])
+    if request_user_logged
+  	  @user = User.find(params[:id])
+    end
   end
 
   private
